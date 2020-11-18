@@ -7,7 +7,7 @@ end
 
 def calc_fuel_for_fuel(fuel_weight)
   sum = 0
-  until fuel_weight == 0
+  until fuel_weight.zero?
     fuel_weight = calc_fuel(fuel_weight)
     sum += fuel_weight
   end
