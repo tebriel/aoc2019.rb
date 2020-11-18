@@ -19,7 +19,7 @@ describe '#calc_fuel_for_fuel' do
     assert_equal(2, fuel + calc_fuel_for_fuel(fuel))
     fuel = calc_fuel(1969)
     assert_equal(966, fuel + calc_fuel_for_fuel(fuel))
-    fuel = calc_fuel(100756)
-    assert_equal(50346, fuel + calc_fuel_for_fuel(fuel))
+    fuel = calc_fuel(100_756)
+    assert_equal(50_346, fuel + calc_fuel_for_fuel(fuel))
   end
 end
