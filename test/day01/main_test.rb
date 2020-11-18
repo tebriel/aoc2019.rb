@@ -12,3 +12,14 @@ describe '#calc_fuel' do
     assert_equal(33_583, calc_fuel(100_756))
   end
 end
+
+describe '#calc_fuel_for_fuel' do
+  it 'runs some common cases' do
+    fuel = calc_fuel(14)
+    assert_equal(2, fuel + calc_fuel_for_fuel(fuel))
+    fuel = calc_fuel(1969)
+    assert_equal(966, fuel + calc_fuel_for_fuel(fuel))
+    fuel = calc_fuel(100756)
+    assert_equal(50346, fuel + calc_fuel_for_fuel(fuel))
+  end
+end
