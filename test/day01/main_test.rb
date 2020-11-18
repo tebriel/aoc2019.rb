@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-require 'day01/main'
+require_relative '../../lib/day01/main'
 
 describe '#calc_fuel' do
   it 'runs some common cases' do
