@@ -2,8 +2,7 @@
 
 # An Intcode processor
 class Intcode
-  attr_reader :memory
-  attr_reader :halted
+  attr_reader :memory, :halted
 
   def initialize(memory)
     @halted = false
@@ -18,21 +17,21 @@ class Intcode
 
   def halt
     @halted = true
-    return 0
+    0
   end
 
   def adds
     param1 = get_val(get_val(@instruction_pointer + 1))
     param2 = get_val(get_val(@instruction_pointer + 2))
     set_val(get_val(@instruction_pointer + 3), param1 + param2)
-    return 4
+    4
   end
 
   def multiplies
     param1 = get_val(get_val(@instruction_pointer + 1))
     param2 = get_val(get_val(@instruction_pointer + 2))
     set_val(get_val(@instruction_pointer + 3), param1 * param2)
-    return 4
+    4
   end
 
   def get_val(address)
@@ -71,7 +70,7 @@ if $PROGRAM_NAME == __FILE__
     intcode.set_val(1, nouns[0])
     intcode.set_val(2, nouns[1])
     intcode.start
-    if intcode.memory[0] == 19690720
+    if intcode.memory[0] == 19_690_720
       puts "Part 2 Answer: #{100 * nouns[0] + nouns[1]}"
       break
     end
