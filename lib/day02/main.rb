@@ -3,42 +3,50 @@
 # An Intcode processor
 class Intcode
   attr_reader :memory
+  attr_reader :halted
 
   def initialize(memory)
-    @cur_idx = 0
+    @halted = false
+    @instruction_pointer = 0
     @memory = memory
-    @opcodes = {
+    @instructions = {
       1 => method(:adds),
       2 => method(:multiplies),
       99 => method(:halt)
     }.freeze
   end
 
-  def halt(_index)
-    puts "Value at 0: #{@memory[0]}"
-    exit(true)
+  def halt
+    @halted = true
+    return 0
   end
 
-  def adds(index)
-    set_val(index + 3, get_val(index + 1) + get_val(index + 2))
+  def adds
+    param1 = get_val(@instruction_pointer + 1)
+    param2 = get_val(@instruction_pointer + 2)
+    set_val(@instruction_pointer + 3, param1 + param2)
+    return 4
   end
 
-  def multiplies(index)
-    set_val(index + 3, get_val(index + 1) * get_val(index + 2))
+  def multiplies
+    param1 = get_val(@instruction_pointer + 1)
+    param2 = get_val(@instruction_pointer + 2)
+    set_val(@instruction_pointer + 3, param1 * param2)
+    return 4
   end
 
-  def get_val(index)
-    @memory[@memory[index]]
+  def get_val(address)
+    @memory[@memory[address]]
   end
 
-  def set_val(index, val)
-    @memory[@memory[index]] = val
+  def set_val(address, val)
+    @memory[@memory[address]] = val
   end
 
   def start
     loop do
-      @opcodes[@memory[@cur_idx]].call(@cur_idx)
-      @cur_idx += 4
+      @instruction_pointer += @instructions[@memory[@instruction_pointer]].call
+      break if @halted
     end
   end
 end
@@ -55,4 +63,5 @@ if $PROGRAM_NAME == __FILE__
   memory[2] = 2
   intcode = Intcode.new(memory)
   intcode.start
+  puts "Value at 0: #{intcode.memory[0]}"
 end
