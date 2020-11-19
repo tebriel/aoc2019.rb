@@ -2,11 +2,11 @@
 
 # An Intcode processor
 class Intcode
-  attr_reader :program
+  attr_reader :memory
 
-  def initialize(program)
+  def initialize(memory)
     @cur_idx = 0
-    @program = program
+    @memory = memory
     @opcodes = {
       1 => method(:adds),
       2 => method(:multiplies),
@@ -15,7 +15,7 @@ class Intcode
   end
 
   def halt(_index)
-    puts "Value at 0: #{@program[0]}"
+    puts "Value at 0: #{@memory[0]}"
     exit(true)
   end
 
@@ -28,16 +28,16 @@ class Intcode
   end
 
   def get_val(index)
-    @program[@program[index]]
+    @memory[@memory[index]]
   end
 
   def set_val(index, val)
-    @program[@program[index]] = val
+    @memory[@memory[index]] = val
   end
 
   def start
     loop do
-      @opcodes[@program[@cur_idx]].call(@cur_idx)
+      @opcodes[@memory[@cur_idx]].call(@cur_idx)
       @cur_idx += 4
     end
   end
@@ -45,14 +45,14 @@ end
 
 if $PROGRAM_NAME == __FILE__
   f = File.open('inputs/day02.txt')
-  program = []
+  memory = []
   f.read.chomp.split(',').each do |a|
-    program.push(a.to_i)
+    memory.push(a.to_i)
   end
   f.close
-  # fix the program
-  program[1] = 12
-  program[2] = 2
-  intcode = Intcode.new(program)
+  # fix the memory
+  memory[1] = 12
+  memory[2] = 2
+  intcode = Intcode.new(memory)
   intcode.start
 end
